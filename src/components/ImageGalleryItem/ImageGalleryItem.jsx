@@ -1,7 +1,7 @@
 import s from '../ImageGalleryItem/ImageGalleryItem.module.css';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Modal } from 'components/Modal';
+import { Modal } from '../Modal/Modal';
 
 export class ImageGalleryItem extends Component {
   static propTypes = {
@@ -19,21 +19,18 @@ export class ImageGalleryItem extends Component {
   };
 
   render() {
+    const { webformatURL, largeImageURL, tags } = this.props;
     return (
       <li className={s.gallery_item}>
         <img
           className={s.gallery_item_image}
-          src={this.webformatURL}
-          alt={this.tags}
-          onOpenModal={this.handleModalOpen}
+          src={webformatURL}
+          alt={tags?.split(',')}
+          onClick={this.handleModalOpen}
         />
         {this.state.isModalOpen && (
-          <Modal>
-            <img
-              src={this.props.largeImageURL}
-              alt={this.props.tags}
-              onCloseModal={this.handleModalOpen}
-            />
+          <Modal onCloseModal={this.handleModalOpen}>
+            <img src={largeImageURL} alt={tags?.split(',')} />
           </Modal>
         )}
       </li>

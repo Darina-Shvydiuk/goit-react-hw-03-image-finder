@@ -19,7 +19,7 @@ export class Searchbar extends Component {
   handleSubmit = event => {
     event.preventDefault();
     if (this.state.query.trim() === '') {
-      return toast.error('Що будемо шукати?');
+      return toast.error('What will we look for?');
     }
     this.props.onSubmit(this.state.query);
     this.resetForm();

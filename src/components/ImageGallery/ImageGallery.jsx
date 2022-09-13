@@ -2,7 +2,15 @@ import s from '../ImageGallery/ImageGallery.module.css';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
+import { Loader } from '../Loader/Loader';
+import { Button } from '../Button/Button';
 
+const Status = {
+  IDLE: 'idle',
+  PENDING: 'pending',
+  RESOLVED: 'resolved',
+  REJECTED: 'rejected',
+};
 export class ImageGallery extends Component {
   static propTypes = {
     images: PropTypes.arrayOf(
@@ -13,19 +21,31 @@ export class ImageGallery extends Component {
       })
     ).isRequired,
   };
+  state = {
+    status: Status.IDLE,
+    isLoadBtnShown: true,
+  };
 
   render() {
+    const { images, onClick, status } = this.props;
     return (
-      <ul className={s.gallery}>
-        {this.props.images.map(({ webformatURL, largeImageURL, tags }, id) => (
-          <ImageGalleryItem
-            key={id}
-            webformatURL={webformatURL}
-            largeImageURL={largeImageURL}
-            tags={tags}
-          />
-        ))}
-      </ul>
+      <>
+        {status === Status.REJECTED && (
+          <p>We didn't find anything, try again</p>
+        )}
+        <ul className={s.gallery}>
+          {images.map(({ webformatURL, largeImageURL, tags, id }) => (
+            <ImageGalleryItem
+              key={id}
+              webformatURL={webformatURL}
+              largeImageURL={largeImageURL}
+              tags={tags}
+            />
+          ))}
+        </ul>
+        {status === Status.PENDING && <Loader />}
+        {status === Status.RESOLVED && <Button onClick={onClick}></Button>}
+      </>
     );
   }
 }
