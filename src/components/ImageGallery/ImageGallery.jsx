@@ -31,7 +31,7 @@ export class ImageGallery extends Component {
     return (
       <>
         {status === Status.REJECTED && (
-          <p>We didn't find anything, try again</p>
+          <p className={s.error}>Something went wrong....</p>
         )}
         <ul className={s.gallery}>
           {images.map(({ webformatURL, largeImageURL, tags, id }) => (
